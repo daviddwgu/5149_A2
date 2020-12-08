@@ -1,0 +1,109 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf400
+\cocoascreenfonts1{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;\f2\fswiss\fcharset0 Helvetica-Oblique;
+}
+{\colortbl;\red255\green255\blue255;\red0\green61\blue204;}
+{\*\expandedcolortbl;;\csgenericrgb\c0\c23922\c80000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww21000\viewh16260\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs26 \cf0 This package contains the java source code and binaries for topic \
+segmentation model described in:\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1\b \cf2 Lan Du, Wray Buntine and Mark Johnson
+\f0\b0 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\i \cf2 "Topic Segmentation with a Structured Topic Model",
+\f0\i0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 NAACL-HLT 2013, page 190-200\cf1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\
+The directory contents of this distribution are as follows:\
+\
+./\
+run 					- A bash script to run the model. The description of parameters\
+					  is given in the file.\
+build.xml        			- An ant script for building the source\
+README           		- This documentation\
+./bin            			- The compiled java class files\
+./src         			- The java source files\
+./lib              			- Library dependencies\
+./datasets/example 	- An example dataset\
+./results				- A folder contains example results from running the example data.\
+ \
+This is a java-based, platform-independent implementation.  The class files\
+provided here require Java Runtime Environment (JRE) 6.0 or higher.  If you\
+have a lower version, you may recompile by running "ant rebuild."  They have\
+been tested to run when compiled to JRE 6.0.\
+\
+============================================================\
+Building Instructions\
+\
+The build system uses Jakarta Ant framework (http://jakarta.apache.org/ant/).\
+\
+To build in unix system, set your current working directory to the root directory of\
+the distribution, where the file "build.xml" is located, and enter the\
+command "ant", optionally followed by target name (build or clean)\
+\
+============================================================\
+Running Instruction\
+\
+This system contains the source code and an example dataset. To run the system \
+on a given dataset, \
+	1) If needed, you can modify the parameter settings in the bash script, named "run".\
+	    The settings in the scripts currently have default values.\
+	2) To run the example dataset, just type\
+		./run ./datasets/example ./results/example 1 50 0 0\
+\
+please refer to ./run for the meaning of each argument.\
+\
+============================================================\
+Input data format\
+\
+The format of input data can be found in ./datasets/example. There are four files\
+with different file extensions in the example folder, which are as follows\
+\
+	example.vocab 		-The vocabulary file. Each line is in the format of "int, string".\
+						 The former is the index of the latter in the vocabulary.\
+	example.meta			-The meta file contains the number of sentences/paragraphs \
+						 in documents. Each line corresponds to the number of \
+						 sentences/paragraphs in a document.\
+	example.seg			-The set file contains the gold segmentation of each document.\
+						 Each line corresponds to the segmentation of one document.\
+	example.data			-The data file contains the transformed data. Each line corresponds\
+						 to a sentence/paragraph. Each line consists of a list of "int:int" tuples.\
+						 The first "int" is type index in vocabulary, the second "int" is the \
+						 count of that type in the sentence/paragraphs.\
+\
+The system will read all the four files according to the file extensions. Note that the first\
+line in .meta corresponds to the first line in .seg, They are for the same document. For example,\
+if the first line of .meta is 38, which means the first document has 38 sentences/paragraphs,\
+then the first line of .seg should have 38 values, which are either 0 or 1; and the first 38\
+lines of .data should belong to the first document.\
+\
+============================================================\
+Output files\
+\
+The output files, as examples, can be found in  \
+./results/example/k(50)-a(0.20)-b(10.00)-alpha(0.10)-beta(0.01)-lambda0(0.10)-lambda1(0.10)-r-1.\
+These files are \
+	./input_data				-Folder contains all the input files.\
+	parameters.log			-Log file stores the parameter settings for the current run.\
+	sampled_rhos.log			-Log file stores the rho samples for each document. For example,\
+							 If we draw 20 samples from the Markov chain for a document that has\
+							5 sentences, we might have "1, 5, 20, 10, 20.,". This vector means\
+							out of 20 sample, there are one sample with a boundary after the first sentence,\
+							5 samples with a boundary after the second sentence, and so on.\
+	topic_word_couts.log		-Log file contains a K*W matrix, where K is the number of topics, W is the\
+							 vocabulary size.\
+	top_words_for_topics.log	-Log file contains the top 100 words for each topic. Words are sorted by their \
+							 probabilities by descending order.\
+\
+The file used to compute PK, WD and WDE is the sampled_rhos.log. For evaluation, please refer to\
+the evaluation code, which is in a separate package.\
+\
+}
